@@ -1,61 +1,30 @@
-import { Student } from "../models/student.model";
+import { generateMessage } from "../helpers/message.helper";
+import { Student } from "../entities/student.entity";
+import { StudentRepository } from "../repositories/student.repository";
 
 class StudentsService {
 
-    students: Array<Student> = [
-        {
-            id: 1,
-            name: 'Matheus',
-            email: 'matheus@gmail.com',
-            senha: '123456'
-        },
-        {
-            id: 2,
-            name: 'Palloma',
-            email: 'palloma@gmail.com',
-            senha: '123456'
-        },
-        {
-            id: 3,
-            name: 'Paulo',
-            email: 'paulo@gmail.com',
-            senha: '123456'
-        },
-        {
-            id: 4,
-            name: 'Gustavo',
-            email: 'gustavo@gmail.com',
-            senha: '123456'
-        }
-    ];
-
-    getAll() {
-        return this.students;
+    async getAll() {
+        return StudentRepository.getAll();
     }
 
     getById(id: number) {
-        return this.students.find((std) => std.id === id);
+        if (!id) throw new Error('O campo Id é obrigatório!');
+        if(!Number(id)) throw new Error('O campo de id precisa ser numérico');
+        return StudentRepository.getById(id);
     }
 
-    getIndexById(id: number) {
-        return this.students.findIndex((std) => std.id === id);
-    }
 
     create(student: Student) {
-        return this.students.push(student);
+        return StudentRepository.create(student);
     }
 
-    removeByIndex(index: number) {
-        return this.students.splice(index, 1);
+    remove(id: number) {
+        return StudentRepository.delete(id);
     }
 
-    update(index: number, student: Student) {
-        this.students[index] = {
-            id: student.id,
-            name: student.name,
-            email: student.email,
-            senha: student.senha
-        };
+    update(id: number, student: Student) {
+        return StudentRepository.update(id, student);
     }
 }
 

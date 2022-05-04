@@ -3,6 +3,7 @@ import cors from 'cors';
 import clientRouter from './routes/clients.routes';
 import studentsRouter from './routes/students.routes';
 import membersRouter from './routes/members.routes';
+import { connection } from './database/config';
 
 const port = 3000;
 const app = express();
@@ -24,7 +25,15 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 
-
-app.listen(port, () => {
+app.listen(port, async () => {
+    await connection;
+    console.log('Banco de dados conectado com sucesso!');
     console.log(`Servidor disponível na porta: ${port}`);
 });
+
+
+// connection.then(() => {
+//     console.log('Banco de dados conectado com sucesso!');
+// }).catch((err) => {
+//     console.log(err);
+// });
